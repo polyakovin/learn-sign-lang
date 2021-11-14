@@ -1,39 +1,9 @@
 import { useEffect, useState } from 'react';
-import { GestureEstimator, GestureDescription, Finger, FingerCurl, FingerDirection } from 'fingerpose';
 import './App.css';
-
+import { russianDactylGesturesEstimator } from './dactyl-gestures';
 const { Hands, drawConnectors, drawLandmarks, HAND_CONNECTIONS, Camera } = window;
 
-const DactylGestures = {
-  А: new GestureDescription('А'),
-  В: new GestureDescription('В'),
-};
-DactylGestures.А.addCurl(Finger.Thumb, FingerCurl.NoCurl);
-DactylGestures.А.addCurl(Finger.Index, FingerCurl.FullCurl);
-DactylGestures.А.addCurl(Finger.Middle, FingerCurl.FullCurl);
-DactylGestures.А.addCurl(Finger.Ring, FingerCurl.FullCurl);
-DactylGestures.А.addCurl(Finger.Pinky, FingerCurl.FullCurl);
-DactylGestures.А.addDirection(Finger.Thumb, FingerDirection.VerticalUp);
-DactylGestures.А.addDirection(Finger.Index, FingerDirection.VerticalUp);
-DactylGestures.А.addDirection(Finger.Middle, FingerDirection.VerticalUp);
-DactylGestures.А.addDirection(Finger.Ring, FingerDirection.VerticalUp);
-DactylGestures.А.addDirection(Finger.Pinky, FingerDirection.VerticalUp);
-
-DactylGestures.В.addCurl(Finger.Thumb, FingerCurl.NoCurl);
-DactylGestures.В.addCurl(Finger.Index, FingerCurl.NoCurl);
-DactylGestures.В.addCurl(Finger.Middle, FingerCurl.NoCurl);
-DactylGestures.В.addCurl(Finger.Ring, FingerCurl.NoCurl);
-DactylGestures.В.addCurl(Finger.Pinky, FingerCurl.NoCurl);
-DactylGestures.В.addDirection(Finger.Thumb, FingerDirection.DiagonalUpLeft);
-DactylGestures.В.addDirection(Finger.Index, FingerDirection.VerticalUp);
-DactylGestures.В.addDirection(Finger.Middle, FingerDirection.VerticalUp);
-DactylGestures.В.addDirection(Finger.Ring, FingerDirection.VerticalUp);
-DactylGestures.В.addDirection(Finger.Pinky, FingerDirection.VerticalUp);
-
-const gestureEstimator = new GestureEstimator([
-  DactylGestures.А,
-  DactylGestures.В,
-]);
+const isHandSkeletonShown = false;
 
 function initRecognizer(cbOnChange) {
   const videoElement = document.getElementsByClassName('input_video')[0];
@@ -46,14 +16,16 @@ function initRecognizer(cbOnChange) {
     canvasCtx.translate(canvasElement.width, 0);
     canvasCtx.scale(-1, 1);
     canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+
     if (results.multiHandLandmarks) {
       for (const landmarks of results.multiHandLandmarks) {
-        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS,
-                      {color: '#00FF00', lineWidth: 5});
-        drawLandmarks(canvasCtx, landmarks, {color: '#FF0000', lineWidth: 2});
+        if (isHandSkeletonShown) {
+          drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#00FF00', lineWidth: 5});
+          drawLandmarks(canvasCtx, landmarks, {color: '#FF0000', lineWidth: 2});
+        }
 
         const landmarksArrays = landmarks.map(({x, y, z}) => [x, y, z]);
-        const recognizedGestures = gestureEstimator.estimate(landmarksArrays, 9);
+        const recognizedGestures = russianDactylGesturesEstimator.estimate(landmarksArrays, 9);
         // console.log(recognizedGestures.gestures);
         // console.log(recognizedGestures.gestures.find(({name}) => name === 'А').score);
         console.log(...recognizedGestures.poseData);
@@ -64,7 +36,6 @@ function initRecognizer(cbOnChange) {
       }
     }
     canvasCtx.restore();
-
   }
 
   const hands = new Hands({locateFile: (file) => {
