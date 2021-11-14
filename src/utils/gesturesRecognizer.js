@@ -26,7 +26,7 @@ export function initRecognizer(cbOnChange) {
         const recognizedGestures = russianDactylGesturesEstimator.estimate(landmarksArrays, 9);
         // console.log(recognizedGestures.gestures);
         // console.log(recognizedGestures.gestures.find(({name}) => name === 'А').score);
-        console.log(...recognizedGestures.poseData);
+        // console.log(...recognizedGestures.poseData);
 
         if (recognizedGestures.gestures.length > 0) {
           cbOnChange(recognizedGestures.gestures);

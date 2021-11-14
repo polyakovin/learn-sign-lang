@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { initRecognizer } from './utils/gesturesRecognizer';
 import { stringToDactylText } from './utils/helpers';
-import { testTwoLetters } from './phrases';
+import { easyPhrases } from './phrases';
 import './App.css';
 
 function App() {
   const [isInited, setIsInited] = useState(false);
-  const [phrase, setPhrase] = useState(testTwoLetters);
+  const [phrase, setPhrase] = useState(easyPhrases);
   const [recognizedGesture, setRecognizedGesture] = useState(null);
 
   useEffect(() => {
@@ -16,12 +16,14 @@ function App() {
       initRecognizer((gestures) => {
         const newRecognizedGesture = gestures.sort((a, b) => b.score - a.score)[0].name;
         setRecognizedGesture(newRecognizedGesture);
-        if (newRecognizedGesture.toLowerCase() === remainingPhrase[0]) {
+        if (
+          !remainingPhrase[0].toLowerCase().match(/[а-я]/) ||
+          newRecognizedGesture.toLowerCase() === remainingPhrase[0].toLowerCase() ||
+          (newRecognizedGesture.toLowerCase() === 'п' && remainingPhrase[0].toLowerCase() === 'л') || // TODO: костыль. тяжело распознаёт Л
+          (newRecognizedGesture.toLowerCase() === 'м' && remainingPhrase[0].toLowerCase() === 'т') // TODO: костыль. не распознаёт Т
+        ) {
           remainingPhrase = remainingPhrase.slice(1);
-          if (remainingPhrase[0] === ' ') {
-            remainingPhrase = remainingPhrase.slice(1);
-          }
-          setPhrase(remainingPhrase);
+          setPhrase(remainingPhrase); // TODO: слишком быстро проглатывает. хорошо бы дать обратную связь о том, что правильно показал (для новичков удобно было бы)
         }
       });
     }

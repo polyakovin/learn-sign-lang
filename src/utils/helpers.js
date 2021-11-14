@@ -7,5 +7,4 @@ export const stringToDactylText = (string) => string
       ? '_'
       : letter === 'ё'
         ? 'е'
-        : letter
-  );
+        : letter);
