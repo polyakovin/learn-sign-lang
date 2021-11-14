@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { initRecognizer } from './utils/gesturesRecognizer';
-import { stringToDactylText } from './utils/helpers';
+import { initRecognizer } from '../utils/gesturesRecognizer';
+import { stringToDactylText } from '../utils/helpers';
 import { easyPhrases } from './phrases';
 import './App.css';
 
