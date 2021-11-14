@@ -4,35 +4,35 @@ import './App.css';
 
 const { Hands, drawConnectors, drawLandmarks, HAND_CONNECTIONS, Camera } = window;
 
-const DactilGestures = {
+const DactylGestures = {
   А: new GestureDescription('А'),
   В: new GestureDescription('В'),
 };
-DactilGestures.А.addCurl(Finger.Thumb, FingerCurl.NoCurl);
-DactilGestures.А.addCurl(Finger.Index, FingerCurl.FullCurl);
-DactilGestures.А.addCurl(Finger.Middle, FingerCurl.FullCurl);
-DactilGestures.А.addCurl(Finger.Ring, FingerCurl.FullCurl);
-DactilGestures.А.addCurl(Finger.Pinky, FingerCurl.FullCurl);
-DactilGestures.А.addDirection(Finger.Thumb, FingerDirection.VerticalUp);
-DactilGestures.А.addDirection(Finger.Index, FingerDirection.VerticalUp);
-DactilGestures.А.addDirection(Finger.Middle, FingerDirection.VerticalUp);
-DactilGestures.А.addDirection(Finger.Ring, FingerDirection.VerticalUp);
-DactilGestures.А.addDirection(Finger.Pinky, FingerDirection.VerticalUp);
+DactylGestures.А.addCurl(Finger.Thumb, FingerCurl.NoCurl);
+DactylGestures.А.addCurl(Finger.Index, FingerCurl.FullCurl);
+DactylGestures.А.addCurl(Finger.Middle, FingerCurl.FullCurl);
+DactylGestures.А.addCurl(Finger.Ring, FingerCurl.FullCurl);
+DactylGestures.А.addCurl(Finger.Pinky, FingerCurl.FullCurl);
+DactylGestures.А.addDirection(Finger.Thumb, FingerDirection.VerticalUp);
+DactylGestures.А.addDirection(Finger.Index, FingerDirection.VerticalUp);
+DactylGestures.А.addDirection(Finger.Middle, FingerDirection.VerticalUp);
+DactylGestures.А.addDirection(Finger.Ring, FingerDirection.VerticalUp);
+DactylGestures.А.addDirection(Finger.Pinky, FingerDirection.VerticalUp);
 
-DactilGestures.В.addCurl(Finger.Thumb, FingerCurl.NoCurl);
-DactilGestures.В.addCurl(Finger.Index, FingerCurl.NoCurl);
-DactilGestures.В.addCurl(Finger.Middle, FingerCurl.NoCurl);
-DactilGestures.В.addCurl(Finger.Ring, FingerCurl.NoCurl);
-DactilGestures.В.addCurl(Finger.Pinky, FingerCurl.NoCurl);
-DactilGestures.В.addDirection(Finger.Thumb, FingerDirection.DiagonalUpLeft);
-DactilGestures.В.addDirection(Finger.Index, FingerDirection.VerticalUp);
-DactilGestures.В.addDirection(Finger.Middle, FingerDirection.VerticalUp);
-DactilGestures.В.addDirection(Finger.Ring, FingerDirection.VerticalUp);
-DactilGestures.В.addDirection(Finger.Pinky, FingerDirection.VerticalUp);
+DactylGestures.В.addCurl(Finger.Thumb, FingerCurl.NoCurl);
+DactylGestures.В.addCurl(Finger.Index, FingerCurl.NoCurl);
+DactylGestures.В.addCurl(Finger.Middle, FingerCurl.NoCurl);
+DactylGestures.В.addCurl(Finger.Ring, FingerCurl.NoCurl);
+DactylGestures.В.addCurl(Finger.Pinky, FingerCurl.NoCurl);
+DactylGestures.В.addDirection(Finger.Thumb, FingerDirection.DiagonalUpLeft);
+DactylGestures.В.addDirection(Finger.Index, FingerDirection.VerticalUp);
+DactylGestures.В.addDirection(Finger.Middle, FingerDirection.VerticalUp);
+DactylGestures.В.addDirection(Finger.Ring, FingerDirection.VerticalUp);
+DactylGestures.В.addDirection(Finger.Pinky, FingerDirection.VerticalUp);
 
 const gestureEstimator = new GestureEstimator([
-  DactilGestures.А,
-  DactilGestures.В,
+  DactylGestures.А,
+  DactylGestures.В,
 ]);
 
 function initRecognizer(cbOnChange) {
@@ -111,7 +111,7 @@ function App() {
     }
   }, [isInited, phrase, recognizedGesture]);
 
-  const dactilText = phrase
+  const dactylText = phrase
     .toLowerCase()
     .split('')
     .filter(letter => letter.match(/[а-я\s]/))
@@ -128,8 +128,8 @@ function App() {
       <div className="container">
         <div className="trainer">
           <p>{phrase}</p>
-          <div className="dactil-row">
-            {dactilText.map((letter, i) => (
+          <div className="dactyl-row">
+            {dactylText.map((letter, i) => (
               <div key={i} className={`letter ${letter}`}></div>
             ))}
           </div>

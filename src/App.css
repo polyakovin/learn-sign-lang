@@ -52,14 +52,14 @@ p::first-letter {
   display: none;
 }
 
-.dactil-row {
+.dactyl-row {
   height: 98px;
   overflow: hidden;
   position: relative;
 }
 
 .letter {
-  background-image: url(./dactil.jpg);
+  background-image: url(./dactyl.jpg);
   width: 152px;
   height: 186px;
   display: inline-block;
