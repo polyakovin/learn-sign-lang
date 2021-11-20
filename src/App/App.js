@@ -1,58 +1,49 @@
-import { useEffect, useState } from 'react';
-import { initRecognizer } from '../utils/gesturesRecognizer';
-import { stringToDactylText } from '../utils/helpers';
+import { useState } from 'react';
 import { easyPhrases } from './phrases';
+import Trainer from './Trainer';
 import './App.css';
 
-function App() {
-  const [isInited, setIsInited] = useState(false);
+const settingsToShow = [
+  {
+    code: 'isHandSkeletonShown',
+    title: 'Режим аналитики (показывать распознанные данные)',
+  },
+  {
+    code: 'areHintsShown',
+    title: 'Показывать подсказки',
+  },
+];
+
+export default function App() {
   const [phrase, setPhrase] = useState(easyPhrases);
-  const [recognizedGesture, setRecognizedGesture] = useState(null);
-
-  useEffect(() => {
-    if (!isInited) {
-      setIsInited(true);
-      let remainingPhrase = phrase;
-      initRecognizer((gestures) => {
-        const newRecognizedGesture = gestures.sort((a, b) => b.score - a.score)[0].name;
-        setRecognizedGesture(newRecognizedGesture);
-
-        if (remainingPhrase.length === 0) {
-          return;
-        }
-
-        if (
-          !remainingPhrase[0].toLowerCase().match(/[а-я]/) ||
-          newRecognizedGesture.toLowerCase() === remainingPhrase[0].toLowerCase() ||
-          (newRecognizedGesture.toLowerCase() === 'п' && remainingPhrase[0].toLowerCase() === 'л') || // TODO: костыль. тяжело распознаёт Л
-          (newRecognizedGesture.toLowerCase() === 'м' && remainingPhrase[0].toLowerCase() === 'т') // TODO: костыль. не распознаёт Т
-        ) {
-          remainingPhrase = remainingPhrase.slice(1);
-          setPhrase(remainingPhrase); // TODO: слишком быстро проглатывает. хорошо бы дать обратную связь о том, что правильно показал (для новичков удобно было бы)
-        }
-      });
-    }
-  }, [isInited, phrase, recognizedGesture]);
-
-  const dactylText = stringToDactylText(phrase);
+  const [isTrainingMode, setIsTrainingMode] = useState(false);
+  const [settings, setSettings] = useState({
+    isHandSkeletonShown: false,
+    areHintsShown: true,
+  });
 
   return (
-    <div className="App">
-      <div className="container">
-        <div className="trainer">
-          <p>{phrase}</p>
-          <div className="dactyl-row">
-            {dactylText.map((letter, i) => (
-              <div key={i} className={`letter ${letter}`}></div>
-            ))}
-          </div>
-        </div>
-        <div className="recognized-gesture">{recognizedGesture}</div>
-        <video className="input_video"></video>
-        <canvas className="output_canvas" width="1280px" height="720px"></canvas>
-      </div>
-    </div>
+    <>
+      {isTrainingMode ? <Trainer
+        phrase={phrase}
+        setPhrase={setPhrase}
+        settings={settings}
+      ></Trainer> : <div className="menu">
+        {settingsToShow.map(({ code, title }, index) => <label>
+          <input
+            key={index}
+            type="checkbox"
+            checked={settings[code]}
+            onChange={() => {
+              const updatedSettings = {...settings};
+              updatedSettings[code] = !updatedSettings[code];
+              setSettings(updatedSettings);
+            }}
+          />
+          {title}
+        </label>)}
+        <button onClick={() => setIsTrainingMode(true)}>Начать тренировку</button>
+      </div>}
+    </>
   );
 }
-
-export default App;

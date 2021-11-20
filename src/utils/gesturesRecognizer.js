@@ -1,12 +1,11 @@
 import { russianDactylGesturesEstimator } from './dactyl-gestures';
 const { Hands, drawConnectors, drawLandmarks, HAND_CONNECTIONS, Camera } = window;
 
-const isHandSkeletonShown = false;
-
-export function initRecognizer(cbOnChange) {
+export function initRecognizer(cbOnChange, settings) {
   const videoElement = document.getElementsByClassName('input_video')[0];
   const canvasElement = document.getElementsByClassName('output_canvas')[0];
   const canvasCtx = canvasElement.getContext('2d');
+  const isHandSkeletonShown = settings.isHandSkeletonShown;
 
   function onResults(results) {
     canvasCtx.save();
@@ -26,7 +25,7 @@ export function initRecognizer(cbOnChange) {
         const recognizedGestures = russianDactylGesturesEstimator.estimate(landmarksArrays, 9);
         // console.log(recognizedGestures.gestures);
         // console.log(recognizedGestures.gestures.find(({name}) => name === 'А').score);
-        // console.log(...recognizedGestures.poseData);
+        console.log(...recognizedGestures.poseData);
 
         if (recognizedGestures.gestures.length > 0) {
           cbOnChange(recognizedGestures.gestures);
