@@ -16,6 +16,11 @@ function App() {
       initRecognizer((gestures) => {
         const newRecognizedGesture = gestures.sort((a, b) => b.score - a.score)[0].name;
         setRecognizedGesture(newRecognizedGesture);
+
+        if (remainingPhrase.length === 0) {
+          return;
+        }
+
         if (
           !remainingPhrase[0].toLowerCase().match(/[а-я]/) ||
           newRecognizedGesture.toLowerCase() === remainingPhrase[0].toLowerCase() ||
