@@ -1,12 +1,12 @@
 import { GestureEstimator } from 'fingerpose';
 import А from './russian/А';
-// import Б from './russian/Б';
+import Б from './russian/Б';
 import В from './russian/В';
 import Г from './russian/Г';
 // import Д from './russian/Д';
 import Е from './russian/Е';
 // import Ё from './russian/Ё';
-// import Ж from './russian/Ж';
+import Ж from './russian/Ж';
 // import З from './russian/З';
 import И from './russian/И';
 // import Й from './russian/Й';
@@ -34,17 +34,17 @@ import Ю from './russian/Ю';
 
 export const RussianDactylGestures = [
   А,
-  // Б, // TODO: движение?
+  Б,
   В,
   Г,
-  // Д, // TODO: движение?
+  // Д, // TODO: кружок
   Е,
-  // Ё, // TODO: движение?
-  // Ж, // TODO: чем отличается от Е?
-  // З, // TODO: движение?
+  // Ё, // TODO
+  Ж,
+  // З, // TODO
   И,
-  // Й, // TODO: движение?
-  // К, // TODO: чем отличается от Д? движением?
+  // Й, // TODO
+  // К, // TODO: пальцы раздельно
   Л,
   М,
   Н,
@@ -58,16 +58,13 @@ export const RussianDactylGestures = [
   Ц,
   Ч,
   Ш,
-  // Щ, // TODO: движение?
-  // Ъ, // TODO: есть?
+  // Щ, // TODO
+  // Ъ, // TODO
   Ы,
-  // Ь, // TODO: чем отличается от З? движением?
+  // Ь, // TODO
   Э,
   Ю,
-  // Я, // TODO: скрещивание. пока слишком похоже на Д и К
-  // TODO: знаки препинания?
-  // TODO: другие символы?
-  // TODO: жесты?
+  // Я, // TODO: скрещивание
 ];
 
 export const russianDactylGesturesEstimator = new GestureEstimator(RussianDactylGestures);
