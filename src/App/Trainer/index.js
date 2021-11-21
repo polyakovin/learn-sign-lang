@@ -4,7 +4,7 @@ import { stringToDactylText } from '../../utils/helpers';
 import './index.css';
 
 export default function Trainer(props) {
-  const { phrase, setPhrase, settings } = props;
+  const { phrase, setPhrase, setMode, settings } = props;
   const [isInited, setIsInited] = useState(false);
   const [recognizedGesture, setRecognizedGesture] = useState(null);
 
@@ -17,6 +17,7 @@ export default function Trainer(props) {
         setRecognizedGesture(newRecognizedGesture);
 
         if (remainingPhrase.length === 0) {
+          setMode('success');
           return;
         }
 

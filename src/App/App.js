@@ -16,7 +16,7 @@ const settingsToShow = [
 
 export default function App() {
   const [phrase, setPhrase] = useState(easyPhrases);
-  const [isTrainingMode, setIsTrainingMode] = useState(false);
+  const [mode, setMode] = useState('menu');
   const localSettings = JSON.parse(localStorage.getItem('settings') || 'null');
   const defaultSettings = {
     isHandSkeletonShown: false,
@@ -24,13 +24,10 @@ export default function App() {
   };
   const [settings, setSettings] = useState(localSettings || defaultSettings);
 
-  return (
-    <>
-      {isTrainingMode ? <Trainer
-        phrase={phrase}
-        setPhrase={setPhrase}
-        settings={settings}
-      ></Trainer> : <div className="menu">
+  let page = null;
+  switch (mode) {
+    case 'menu':
+      page = <div className="menu">
         {settingsToShow.map(({ code, title }, index) => <label>
           <input
             key={index}
@@ -45,8 +42,34 @@ export default function App() {
           />
           {title}
         </label>)}
-        <button onClick={() => setIsTrainingMode(true)}>Начать тренировку</button>
-      </div>}
+        <button onClick={() => setMode('training')}>Начать тренировку</button>
+      </div>;
+      break;
+
+    case 'training':
+      page = <Trainer
+        phrase={phrase}
+        setPhrase={setPhrase}
+        setMode={setMode}
+        settings={settings}
+      ></Trainer>;
+      break;
+
+    case 'success':
+      page = <div className="menu">
+        <h1>Поздравляю! Упражнение выполнено!</h1>
+        <button onClick={() => setMode('menu')}>Вернуться на главную</button>
+      </div>;
+      break;
+
+    default:
+      page = null;
+      break;
+  }
+
+  return (
+    <>
+      {page}
     </>
   );
 }
