@@ -12,8 +12,7 @@ export default function Trainer(props) {
     if (!isInited) {
       setIsInited(true);
       let remainingPhrase = phrase;
-      initRecognizer((gestures) => {
-        const newRecognizedGesture = gestures.sort((a, b) => b.score - a.score)[0].name;
+      initRecognizer((newRecognizedGesture) => {
         setRecognizedGesture(newRecognizedGesture);
 
         if (remainingPhrase.length === 0) {

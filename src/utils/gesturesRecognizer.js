@@ -6,6 +6,8 @@ export function initRecognizer(cbOnChange, settings) {
   const canvasElement = document.getElementsByClassName('output_canvas')[0];
   const canvasCtx = canvasElement.getContext('2d');
   const isHandSkeletonShown = settings.isHandSkeletonShown;
+  let lastRecognizedGesture;
+  let dataToWatch = [];
 
   function onResults(results) {
     canvasCtx.save();
@@ -25,10 +27,28 @@ export function initRecognizer(cbOnChange, settings) {
         const recognizedGestures = russianDactylGesturesEstimator.estimate(landmarksArrays, 9);
         // console.log(recognizedGestures.gestures);
         // console.log(recognizedGestures.gestures.find(({name}) => name === 'А').score);
-        console.log(...recognizedGestures.poseData);
+        // console.log(...recognizedGestures.poseData);
 
         if (recognizedGestures.gestures.length > 0) {
-          cbOnChange(recognizedGestures.gestures);
+          let newRecognizedGesture = recognizedGestures.gestures.sort((a, b) => b.score - a.score)[0].name;
+
+          if (newRecognizedGesture === 'Ш') {
+            const y = landmarksArrays[0][1];
+            dataToWatch.push(y);
+            if (dataToWatch.length > 0) {
+              const dy = dataToWatch[dataToWatch.length - 1] - Math.min(...dataToWatch);
+              if (dy > 0.1) {
+                newRecognizedGesture = 'Щ';
+              }
+            }
+          } else {
+            dataToWatch = [];
+          }
+
+          if (newRecognizedGesture !== lastRecognizedGesture) {
+            lastRecognizedGesture = newRecognizedGesture;
+            cbOnChange(newRecognizedGesture);
+          }
         }
       }
     }
