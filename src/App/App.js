@@ -58,7 +58,7 @@ export default function App() {
     case 'success':
       page = <div className="menu">
         <h1>Поздравляю! Упражнение выполнено!</h1>
-        <button onClick={() => setMode('menu')}>Вернуться на главную</button>
+        <button onClick={() => window.location.href = '/'}>Вернуться на главную</button>
       </div>;
       break;
 
