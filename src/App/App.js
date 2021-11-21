@@ -17,10 +17,12 @@ const settingsToShow = [
 export default function App() {
   const [phrase, setPhrase] = useState(easyPhrases);
   const [isTrainingMode, setIsTrainingMode] = useState(false);
-  const [settings, setSettings] = useState({
+  const localSettings = JSON.parse(localStorage.getItem('settings') || 'null');
+  const defaultSettings = {
     isHandSkeletonShown: false,
     areHintsShown: true,
-  });
+  };
+  const [settings, setSettings] = useState(localSettings || defaultSettings);
 
   return (
     <>
@@ -37,6 +39,7 @@ export default function App() {
             onChange={() => {
               const updatedSettings = {...settings};
               updatedSettings[code] = !updatedSettings[code];
+              localStorage.setItem('settings', JSON.stringify(updatedSettings));
               setSettings(updatedSettings);
             }}
           />
