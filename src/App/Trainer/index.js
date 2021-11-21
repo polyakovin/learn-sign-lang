@@ -32,20 +32,31 @@ export default function Trainer(props) {
         }
       }, settings);
     }
-  }, [isInited, phrase, setPhrase, recognizedGesture, settings]);
+  }, [
+    isInited,
+    phrase,
+    setPhrase,
+    setMode,
+    recognizedGesture,
+    settings,
+  ]);
 
   const dactylText = stringToDactylText(phrase);
+  const currentLetter = dactylText[0];
 
   return (
     <div className="trainer-wrapper">
       <div className="container">
         <div className="trainer">
           <p>{phrase}</p>
-          {settings.areHintsShown && <div className="dactyl-row">
-            {dactylText.map((letter, i) => (
-              <div key={i} className={`letter ${letter}`}></div>
-            ))}
-          </div>}
+          {settings.areHintsShown && <>{settings.isSingleHintShown
+            ? <div className="dactyl-row">
+              {dactylText.map((letter, i) => (
+                <div key={i} className={`letter ${letter}`}></div>
+              ))}
+            </div>
+            : <div className={`dactyl-hint letter ${currentLetter}`}></div>
+          }</>}
         </div>
         <div className="recognized-gesture">{recognizedGesture}</div>
         <video className="input_video"></video>

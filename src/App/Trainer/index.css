@@ -76,6 +76,14 @@ p::first-letter {
   opacity: 1;
 }
 
+.dactyl-hint {
+  position: absolute;
+  bottom: 50vh;
+  left: 80px;
+  opacity: .7;
+  transform: scale(1.2) translateY(50%);
+}
+
 .letter._ {
   background-image: none;
   width: 40px;

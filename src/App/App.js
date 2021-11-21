@@ -12,6 +12,10 @@ const settingsToShow = [
     code: 'areHintsShown',
     title: 'Показывать подсказки',
   },
+  {
+    code: 'isSingleHintShown',
+    title: 'В качестве подсказки показывать все символы сразу',
+  },
 ];
 
 export default function App() {
@@ -20,6 +24,7 @@ export default function App() {
   const defaultSettings = {
     isHandSkeletonShown: false,
     areHintsShown: true,
+    isSingleHintShown: false,
     phrase: 'easyPhrases',
   };
   const [settings, setSettings] = useState(localSettings || defaultSettings);
