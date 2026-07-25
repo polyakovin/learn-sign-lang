@@ -46,7 +46,8 @@ npm run verify
 - `src/App/phrases.js` — наборы упражнений;
 - `public/index.html` — подключение браузерных скриптов MediaPipe.
 
-Подробности и известные границы описаны в
+История идеи, цели и продуктовые гипотезы собраны в
+[`docs/product-context.md`](docs/product-context.md), а технические границы — в
 [`docs/architecture.md`](docs/architecture.md). Правила для ИИ-агентов и
 контрибьюторов находятся в [`AGENTS.md`](AGENTS.md).
 
