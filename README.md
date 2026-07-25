@@ -1,70 +1,58 @@
-# Getting Started with Create React App
+# Learn Sign Language
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Браузерный тренажёр русской дактильной азбуки. Приложение получает ориентиры
+кисти с веб-камеры через MediaPipe Hands, распознаёт жесты с помощью `fingerpose`
+и последовательно проводит пользователя по выбранному набору букв или фраз.
 
-## Available Scripts
+Проект работает полностью на клиенте. Для режима тренировки нужны веб-камера,
+разрешение браузера на её использование и доступ к CDN MediaPipe.
 
-In the project directory, you can run:
+## Быстрый старт
 
-### `yarn start`
+Текущий стек проекта воспроизводится на Node.js 14.21.1 и npm 6.14.x:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```bash
+nvm use
+npm ci
+npm start
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Приложение откроется на [http://localhost:3000](http://localhost:3000).
 
-### `yarn test`
+## Проверка изменений
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Перед отправкой изменений выполните единый локальный gate:
 
-### `yarn build`
+```bash
+npm run verify
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Он запускает Jest в неинтерактивном режиме и создаёт production-сборку. Для
+изменений распознавания дополнительно нужна ручная проверка с реальной камерой:
+автоматические тесты не воспроизводят MediaPipe и условия освещения.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Отдельные команды:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `npm run test:ci` — тесты один раз;
+- `npm run build` — production-сборка в `build/`;
+- `npm start` — локальный сервер разработки.
 
-### `yarn eject`
+## Устройство проекта
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- `src/App/App.js` — меню, настройки и режимы приложения;
+- `src/App/Trainer/` — экран тренировки и продвижение по фразе;
+- `src/utils/gesturesRecognizer.js` — интеграция камеры и MediaPipe;
+- `src/utils/dactyl-gestures/` — описания жестов для `fingerpose`;
+- `src/App/phrases.js` — наборы упражнений;
+- `public/index.html` — подключение браузерных скриптов MediaPipe.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Подробности и известные границы описаны в
+[`docs/architecture.md`](docs/architecture.md). Правила для ИИ-агентов и
+контрибьюторов находятся в [`AGENTS.md`](AGENTS.md).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Ограничения
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Часть букв пока исключена из распознавателя: для них требуется распознавание
+движения или более точное разделение похожих поз. Файлы жестов используют
+кириллические Unicode-имена, поэтому их нельзя массово переименовывать или
+нормализовать между файловыми системами без отдельной проверки Git diff.

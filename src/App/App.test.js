@@ -1,8 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+beforeEach(() => {
+  window.localStorage.clear();
+});
+
+test('renders the training menu', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+
+  expect(
+    screen.getByRole('button', { name: 'Начать тренировку' })
+  ).toBeInTheDocument();
+  expect(screen.getByLabelText(/показывать подсказки/i)).toBeChecked();
+  expect(screen.getByLabelText(/упражнение/i)).toHaveValue('easyPhrases');
 });

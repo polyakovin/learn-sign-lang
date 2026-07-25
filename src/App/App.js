@@ -41,9 +41,8 @@ export default function App() {
   switch (mode) {
     case 'menu':
       page = <div className="menu">
-        {settingsToShow.map(({ code, title }, index) => <label>
+        {settingsToShow.map(({ code, title }) => <label key={code}>
           <input
-            key={index}
             type="checkbox"
             checked={settings[code]}
             onChange={() => updateSettings(code, !settings[code])}
@@ -56,7 +55,9 @@ export default function App() {
             updateSettings('phrase', target.value);
             setPhrase(phrases[target.value]);
           }}>
-            {Object.keys(phrases).map(phraseKey => <option value={phraseKey}>{phraseKey}</option>)}
+            {Object.keys(phrases).map(phraseKey => (
+              <option key={phraseKey} value={phraseKey}>{phraseKey}</option>
+            ))}
           </select>
         </label>
         <button onClick={() => setMode('training')}>Начать тренировку</button>
